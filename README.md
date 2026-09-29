@@ -11,7 +11,7 @@ The strongest student model used layer-wise knowledge distillation and achieved:
 | Model | EuroSAT Accuracy | Parameters |
 | --- | ---: | ---: |
 | MSDF Swin Transformer Teacher | 98.50% | 28.975M |
-| Layer-Wise KD ResNet-18 | **98.04%** | **11.71M |
+| Layer-Wise KD ResNet-18 | **98.04%** | **11.71M** |
 | Baseline ResNet-18 | 97.09% | ~11M |
 
 The layer-wise student retained nearly all of the teacher's EuroSAT classification accuracy while using roughly 40% as many parameters.
@@ -65,7 +65,7 @@ Intermediate ResNet feature maps are extracted from multiple residual stages and
 
 ### Layer-Wise Knowledge Distillation
 
-The strongest student was trained using a combination of:
+The strongest-performing student used layer-wise distillation and combined three complementary learning signals:
 
 - **Cross-Entropy Loss** — learns from ground-truth class labels
 - **KL-Divergence Loss** — transfers the teacher's softened class probability distribution
@@ -75,6 +75,7 @@ The layer-wise loss combines both final model predictions and intermediate repre
 
 ## Knowledge Distillation Pipeline
 
+```text
                     Input Image
                         |
             +-----------+-----------+
@@ -85,13 +86,43 @@ The layer-wise loss combines both final model predictions and intermediate repre
      Teacher Logits            Student Logits
             |                       |
             +------ KL Loss --------+
-            |
-     Teacher Feature Maps
-            |
-        Projection
-            |
-     Student Feature Maps
-            |
-          MSE Loss
+            |                       |
+     Teacher Feature Maps     Student Feature Maps
+            |                       |
+            +------ MSE Loss -------+
+                                    |
+Ground-Truth Labels ----------------+
+                                    |
+                         Cross-Entropy Loss
+                                    |
+                                    v
+                           Combined KD Loss
+                                    |
+                                    v
+                         Update Student Model
 
-Ground Truth -> Cross-Entropy Loss -> Combined KD Loss -> Update Student Model
+```md
+The student is optimized using a composite objective that combines ground-truth classification loss, teacher-student logit distillation, and intermediate feature-map alignment.
+
+## Results Interpretation
+
+The layer-wise student achieved 98.04% accuracy on EuroSAT compared with 98.50% for the MSDF Swin teacher, while reducing the model from approximately 28.98M to 11.71M parameters.
+
+This suggests that intermediate feature alignment can preserve most of the teacher model's predictive performance while substantially reducing model size.
+
+## Models
+
+### `teacher_model.py`
+Implements the MSDF Swin Transformer teacher using a Swin-Tiny backbone, multi-scale feature fusion, and attention/feature extraction.
+
+### `Baseline_ResNet.py`
+Implements the standard ResNet-18 baseline used for comparison.
+
+### `resnet_LayerWise_distilled.py`
+Implements the layer-wise knowledge-distilled ResNet-18 using:
+- Cross-entropy loss
+- Temperature-scaled KL-divergence
+- Intermediate feature-map MSE loss
+
+### `MSDFResNet_LayerWise_Distilled.py`
+Extends the ResNet-18 student with an MSDF module and additional distillation across fused features and gating outputs.
