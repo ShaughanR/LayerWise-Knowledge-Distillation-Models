@@ -94,8 +94,4 @@ The layer-wise loss combines both final model predictions and intermediate repre
             |
           MSE Loss
 
-Ground Truth -------- Cross-Entropy Loss
-                           |
-                    Combined KD Loss
-                           |
-                  Update Student Model
+Ground Truth -> Cross-Entropy Loss -> Combined KD Loss -> Update Student Model
