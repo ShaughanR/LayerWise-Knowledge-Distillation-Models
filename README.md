@@ -101,7 +101,7 @@ Ground-Truth Labels ----------------+
                                     v
                          Update Student Model
 
-```md
+
 The student is optimized using a composite objective that combines ground-truth classification loss, teacher-student logit distillation, and intermediate feature-map alignment.
 
 ## Results Interpretation
