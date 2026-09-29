@@ -120,7 +120,7 @@ Implements the MSDF Swin Transformer teacher using a Swin-Tiny backbone, multi-s
 ### `Baseline_ResNet.py`
 Implements the standard ResNet-18 baseline used for comparison.
 
-### `resnet_LayerWise_distilled.py`
+### `ResNet_LayerWise_distilled.py`
 Implements the layer-wise knowledge-distilled ResNet-18 using:
 - Cross-entropy loss
 - Temperature-scaled KL-divergence
