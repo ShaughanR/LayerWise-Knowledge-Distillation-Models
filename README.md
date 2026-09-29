@@ -73,6 +73,7 @@ The strongest-performing student used layer-wise distillation and combined three
 
 The layer-wise loss combines both final model predictions and intermediate representations, allowing the student to learn more information than response-based distillation alone.
 
+```md
 ## Knowledge Distillation Pipeline
 
 ```text
@@ -100,6 +101,7 @@ Ground-Truth Labels ----------------+
                                     |
                                     v
                          Update Student Model
+```
 
 
 The student is optimized using a composite objective that combines ground-truth classification loss, teacher-student logit distillation, and intermediate feature-map alignment.
@@ -126,3 +128,5 @@ Implements the layer-wise knowledge-distilled ResNet-18 using:
 
 ### `MSDFResNet_LayerWise_Distilled.py`
 Extends the ResNet-18 student with an MSDF module and additional distillation across fused features and gating outputs.
+
+
