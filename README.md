@@ -73,7 +73,7 @@ The strongest-performing student used layer-wise distillation and combined three
 
 The layer-wise loss combines both final model predictions and intermediate representations, allowing the student to learn more information than response-based distillation alone.
 
-```md
+
 ## Knowledge Distillation Pipeline
 
 ```text
